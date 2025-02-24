@@ -1,0 +1,30 @@
+server:
+  dev:
+    enabled: false
+  standalone:
+    enabled: true
+    config: |
+      ui = true
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+      storage "file" {
+        path = "/vault/data"
+      }
+  service:
+    enabled: true
+    type: NodePort
+    nodePort: 30900
+  dataStorage:
+    enabled: true
+    size: 10Gi
+  auditStorage:
+    enabled: true
+    size: 10Gi
+ui:
+  enabled: true
+  serviceType: NodePort
+  serviceNodePort: 30901
+  externalPort: 8200 

@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: discord-bot-build
+spec:
+  entrypoint: build-and-deploy
+  templates:
+  - name: build-and-deploy
+    dag:
+      tasks:
+      - name: build
+        template: build-container
+      - name: deploy
+        template: deploy-bot
+        dependencies: [build]
+
+  - name: build-container
+    container:
+      image: gcr.io/kaniko-project/executor:latest
+      args:
+      - --context=git://github.com/CoreyJ87/discord-bot
+      - --destination=harbor.lan/discord-bot:latest
+      - --insecure
+      - --skip-tls-verify
+      volumeMounts:
+        - name: harbor-creds
+          mountPath: /kaniko/.docker/
+    volumes:
+    - name: harbor-creds
+      secret:
+        secretName: harbor-registry-creds
+
+  - name: deploy-bot
+    container:
+      image: bitnami/kubectl
+      command: [kubectl]
+      args:
+      - apply
+      - -f
+      - k8s/
+      volumeMounts:
+        - name: kubeconfig
+          mountPath: /root/.kube/
+    volumes:
+    - name: kubeconfig
+      secret:
+        secretName: kubeconfig 

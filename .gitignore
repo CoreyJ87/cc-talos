@@ -1,0 +1,25 @@
+# Age encryption key
+age.key
+
+# Decrypted Talos configs
+talos/**/*.yaml
+!talos/**/*.template.yaml
+
+# Decrypted Kubernetes configs
+kubernetes/apps/harbor/values.yaml
+kubernetes/apps/harbor/pv.yaml
+!kubernetes/apps/harbor/*.template.yaml
+
+# Harbor non-template files
+kubernetes/argocd/apps/harbor/values.yaml
+kubernetes/argocd/apps/harbor/registry-pv.yaml
+kubernetes/argocd/apps/harbor/kustomization.yaml
+!kubernetes/argocd/apps/harbor/*.template.yaml
+
+# Local environment files
+.env
+*.local
+*.local.yaml
+
+# Keep encrypted files
+!talos/**/*.yaml.age 
