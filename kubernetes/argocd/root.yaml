@@ -7,11 +7,8 @@ spec:
   project: default
   source:
     repoURL: https://github.com/CoreyJ87/cc-talos.git
-    path: kubernetes/argocd
+    path: kubernetes/argocd/core
     targetRevision: main
-    directory:
-      recurse: true
-      exclude: root.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
